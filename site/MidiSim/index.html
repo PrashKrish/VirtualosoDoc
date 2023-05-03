@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>MidiSim - Virtuoso Docs</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "MidiSim";
+        var mkdocs_page_input_path = "MidiSim.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Virtuoso Docs
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Welcome to MkDocs</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Audio2Midi/">Audio2Midi</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../SheetMusic2Midi/">SheetMusic2Midi</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">MidiSim</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Virtuoso Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li>MidiSim</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>By ingesting the output of the <code>Audio2Midi.md</code> and <code>SheetMusic2Midi.mid</code>,
+the midi files are compared and the similarity is calculated by looking at
+the timestamps and the notes played at those times.</p>
+
+
+<div class="doc doc-object doc-module">
+
+
+<a id="source.MidiSim"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="source.MidiSim.MidiSim" class="doc doc-heading">
+        <code>MidiSim</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+
+
+        <details class="quote">
+          <summary>Source code in <code>source\MidiSim.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MidiSim</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_fp</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sm_fp</span> <span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the comparison process between the audio recording and the sheet music. </span>
+<span class="sd">        More specfically, it reads in the midi files generated by the audio2Midi and sheetMusic2Midi systems.</span>
+<span class="sd">        Then, calls the comparison functions and spits the results out into output.txt by calling the write data function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ui_fp (str): User Input File Path</span>
+<span class="sd">            sm_fp (str): Sheet Music File Path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">userinput_file_path</span> <span class="o">=</span>  <span class="n">ui_fp</span> <span class="c1"># &#39;midi_files/Criminal_1.mid&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sheetmusic_file_path</span> <span class="o">=</span> <span class="n">sm_fp</span> <span class="c1"># &#39;midi_files/criminal_2.mid</span>
+        <span class="c1"># output_file_path = sys.argv[3]&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userinput_file_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sheetmusic_file_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simScore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midiComp</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">musicDataOuput</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">l2Norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">v1Mag</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">list1</span><span class="p">])</span>
+        <span class="n">v2Mag</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">list2</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">sub1</span><span class="p">,</span> <span class="n">sub2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+            <span class="n">sub_distance</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sub1</span><span class="p">,</span> <span class="n">sub2</span><span class="p">):</span> <span class="n">sub_distance</span> <span class="o">+=</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+            <span class="n">distance</span> <span class="o">+=</span> <span class="n">sub_distance</span>
+        <span class="n">distance</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v1Mag</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v2Mag</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distance</span>
+
+    <span class="k">def</span> <span class="nf">midiComp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compares the user performance with the sheet music midi.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            notes1 (list): Contains information from User Performance midi</span>
+<span class="sd">            notes2 (list): Contains information from Sheet Music midi</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Returns the similarity score between user performance and sheet music.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">val1</span><span class="p">,</span> <span class="n">val2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">notes</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">val1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span><span class="p">),</span> <span class="p">(</span><span class="n">val2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span><span class="p">)]:</span>
+            <span class="c1"># print(msg.note, msg.velocity, msg.time)</span>
+            <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">notes</span><span class="p">:</span>
+                <span class="n">time</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">vel</span> <span class="o">=</span> <span class="n">note</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">note</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">note</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">and</span> <span class="n">pitch</span> <span class="o">==</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span> <span class="c1"># Append pitch to last group</span>
+                <span class="k">else</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">pitch</span><span class="p">])</span> <span class="c1"># Create new group for pitch</span>
+
+        <span class="c1"># Calculate similarity for each group of pitches</span>
+        <span class="n">similarity_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2Norm</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="n">val2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">similarity_score</span>
+
+    <span class="k">def</span> <span class="nf">musicDataOuput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outFile</span> <span class="o">=</span> <span class="s2">&quot;output.txt&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function writes out midi Data, similiraity scores, and intelligent feedback to a .txt file.</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            userData (list): user music data, where userData[i] = [startTime, endTime, note, velocity]</span>
+<span class="sd">            sMusData (list): sheet music data, where sMusData[i] = [startTime, endTime, note, velocity]</span>
+<span class="sd">            simScore (float): Similarity score between both userData nad sMusData.</span>
+<span class="sd">            outFile (str, optional): File Path to output text file. Defaults to &quot;output.txt&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">midiSet</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;User Music Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Sheet Music Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span><span class="p">)]:</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Size = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">midiSet</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;StartTime EndTime Note Velocity</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">midiSet</span><span class="p">:</span> 
+                <span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">midi_to_note</span><span class="p">[</span><span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="c1"># Covnerts numerical note (1...127) to letter note.</span>
+                <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">note</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>  
+        <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Similarity Score = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">simScore</span><span class="si">:</span><span class="s2">.10f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outFile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>  <span class="c1"># Potential issues could rise with concurrency, so flush forces the output to be written to disk</span>
+
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midiFile</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">accThreshold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This processes a midi file and extracts timing data, note data, and velocity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            midiFile (str): Path to the midi file</span>
+<span class="sd">            accThreshold (int, optional): Time threshold for accidental note being played </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            notes (list): returns list with each element of the form [startTime, endTime, note, velocity]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">notes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">midi</span> <span class="o">=</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">(</span><span class="n">midiFile</span><span class="p">)</span> <span class="c1"># Load midi file</span>
+        <span class="n">deltaT</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">mido</span><span class="o">.</span><span class="n">merge_tracks</span><span class="p">(</span><span class="n">midi</span><span class="o">.</span><span class="n">tracks</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+                <span class="n">pitch</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">note</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span>
+                <span class="c1"># print(msg)</span>
+                <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;=</span> <span class="n">accThreshold</span><span class="p">:</span> <span class="c1"># Checks if note is accidental</span>
+                    <span class="n">deltaT</span> <span class="o">+=</span> <span class="n">time</span> <span class="c1"># Need to add to the time to the offset</span>
+                    <span class="k">continue</span> <span class="c1"># Don&#39;t add accidental note to the list of notes played</span>
+
+                <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">deltaT</span><span class="p">,</span> <span class="n">deltaT</span> <span class="o">+</span> <span class="n">time</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">force</span><span class="p">])</span>
+                <span class="n">deltaT</span> <span class="o">+=</span> <span class="n">time</span>
+
+        <span class="k">return</span> <span class="n">notes</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="source.MidiSim.MidiSim.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">ui_fp</span><span class="p">,</span> <span class="n">sm_fp</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Initializes the comparison process between the audio recording and the sheet music. 
+More specfically, it reads in the midi files generated by the audio2Midi and sheetMusic2Midi systems.
+Then, calls the comparison functions and spits the results out into output.txt by calling the write data function.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>ui_fp</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>User Input File Path</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sm_fp</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Sheet Music File Path</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>source\MidiSim.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ui_fp</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sm_fp</span> <span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes the comparison process between the audio recording and the sheet music. </span>
+<span class="sd">    More specfically, it reads in the midi files generated by the audio2Midi and sheetMusic2Midi systems.</span>
+<span class="sd">    Then, calls the comparison functions and spits the results out into output.txt by calling the write data function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ui_fp (str): User Input File Path</span>
+<span class="sd">        sm_fp (str): Sheet Music File Path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">userinput_file_path</span> <span class="o">=</span>  <span class="n">ui_fp</span> <span class="c1"># &#39;midi_files/Criminal_1.mid&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sheetmusic_file_path</span> <span class="o">=</span> <span class="n">sm_fp</span> <span class="c1"># &#39;midi_files/criminal_2.mid</span>
+    <span class="c1"># output_file_path = sys.argv[3]&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">userinput_file_path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sheetmusic_file_path</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">simScore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">midiComp</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">musicDataOuput</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="source.MidiSim.MidiSim.midiComp" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">midiComp</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Compares the user performance with the sheet music midi.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>notes1</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>Contains information from User Performance midi</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>notes2</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>Contains information from Sheet Music midi</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>float</code></td>          <td>
+          </td>
+          <td><p>Returns the similarity score between user performance and sheet music.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>source\MidiSim.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">midiComp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compares the user performance with the sheet music midi.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        notes1 (list): Contains information from User Performance midi</span>
+<span class="sd">        notes2 (list): Contains information from Sheet Music midi</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Returns the similarity score between user performance and sheet music.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val1</span><span class="p">,</span> <span class="n">val2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">notes</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">val1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span><span class="p">),</span> <span class="p">(</span><span class="n">val2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span><span class="p">)]:</span>
+        <span class="c1"># print(msg.note, msg.velocity, msg.time)</span>
+        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">notes</span><span class="p">:</span>
+            <span class="n">time</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">vel</span> <span class="o">=</span> <span class="n">note</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">note</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">note</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">and</span> <span class="n">pitch</span> <span class="o">==</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span> <span class="c1"># Append pitch to last group</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">val</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">pitch</span><span class="p">])</span> <span class="c1"># Create new group for pitch</span>
+
+    <span class="c1"># Calculate similarity for each group of pitches</span>
+    <span class="n">similarity_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l2Norm</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="n">val2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">similarity_score</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="source.MidiSim.MidiSim.musicDataOuput" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">musicDataOuput</span><span class="p">(</span><span class="n">outFile</span><span class="o">=</span><span class="s1">&#39;output.txt&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>This function writes out midi Data, similiraity scores, and intelligent feedback to a .txt file.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>userData</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>user music data, where userData[i] = [startTime, endTime, note, velocity]</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sMusData</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>sheet music data, where sMusData[i] = [startTime, endTime, note, velocity]</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>simScore</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td><p>Similarity score between both userData nad sMusData.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>outFile</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>File Path to output text file. Defaults to "output.txt".</p></td>
+          <td>
+                <code>&#39;output.txt&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>source\MidiSim.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">musicDataOuput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outFile</span> <span class="o">=</span> <span class="s2">&quot;output.txt&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function writes out midi Data, similiraity scores, and intelligent feedback to a .txt file.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        userData (list): user music data, where userData[i] = [startTime, endTime, note, velocity]</span>
+<span class="sd">        sMusData (list): sheet music data, where sMusData[i] = [startTime, endTime, note, velocity]</span>
+<span class="sd">        simScore (float): Similarity score between both userData nad sMusData.</span>
+<span class="sd">        outFile (str, optional): File Path to output text file. Defaults to &quot;output.txt&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">midiSet</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;User Music Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Sheet Music Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes2</span><span class="p">)]:</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Size = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">midiSet</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;StartTime EndTime Note Velocity</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">midiSet</span><span class="p">:</span> 
+            <span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">midi_to_note</span><span class="p">[</span><span class="n">note</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="c1"># Covnerts numerical note (1...127) to letter note.</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">note</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>  
+    <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Similarity Score = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">simScore</span><span class="si">:</span><span class="s2">.10f</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outFile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>  <span class="c1"># Potential issues could rise with concurrency, so flush forces the output to be written to disk</span>
+
+    <span class="k">return</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="source.MidiSim.MidiSim.processMidiFiles" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">processMidiFiles</span><span class="p">(</span><span class="n">midiFile</span><span class="p">,</span> <span class="n">accThreshold</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>This processes a midi file and extracts timing data, note data, and velocity.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>midiFile</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Path to the midi file</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>accThreshold</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Time threshold for accidental note being played </p></td>
+          <td>
+                <code>10</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>notes</code></td>          <td>
+                <code>list</code>
+          </td>
+          <td><p>returns list with each element of the form [startTime, endTime, note, velocity]</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>source\MidiSim.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">processMidiFiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midiFile</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">accThreshold</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This processes a midi file and extracts timing data, note data, and velocity.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        midiFile (str): Path to the midi file</span>
+<span class="sd">        accThreshold (int, optional): Time threshold for accidental note being played </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        notes (list): returns list with each element of the form [startTime, endTime, note, velocity]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">midi</span> <span class="o">=</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">(</span><span class="n">midiFile</span><span class="p">)</span> <span class="c1"># Load midi file</span>
+    <span class="n">deltaT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">mido</span><span class="o">.</span><span class="n">merge_tracks</span><span class="p">(</span><span class="n">midi</span><span class="o">.</span><span class="n">tracks</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;note_on&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+            <span class="n">pitch</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">note</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span>
+            <span class="c1"># print(msg)</span>
+            <span class="k">if</span> <span class="n">time</span> <span class="o">&lt;=</span> <span class="n">accThreshold</span><span class="p">:</span> <span class="c1"># Checks if note is accidental</span>
+                <span class="n">deltaT</span> <span class="o">+=</span> <span class="n">time</span> <span class="c1"># Need to add to the time to the offset</span>
+                <span class="k">continue</span> <span class="c1"># Don&#39;t add accidental note to the list of notes played</span>
+
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">deltaT</span><span class="p">,</span> <span class="n">deltaT</span> <span class="o">+</span> <span class="n">time</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">force</span><span class="p">])</span>
+            <span class="n">deltaT</span> <span class="o">+=</span> <span class="n">time</span>
+
+    <span class="k">return</span> <span class="n">notes</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../SheetMusic2Midi/" class="btn btn-neutral float-left" title="SheetMusic2Midi"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../SheetMusic2Midi/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

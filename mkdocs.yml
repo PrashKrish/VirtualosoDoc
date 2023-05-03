@@ -1,0 +1,17 @@
+site_name: Virtuoso Docs
+
+theme:
+  name: "readthedocs"
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      watch:
+        - source
+
+
+nav:
+  - index.md
+  - Audio2Midi.md
+  - SheetMusic2Midi.md
+  - MidiSim.md
